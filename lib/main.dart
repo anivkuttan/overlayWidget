@@ -65,29 +65,36 @@ class _OverlayButtonState extends State<OverlayButton> {
  */
   bool _isOverlayOpen = false;
   OverlayEntry? kuttansoverlayEntry;
-
+  // global key to fint the Parrent widget render box values
+ final  GlobalKey _parrentWidgetKey = GlobalKey();
+ // link the parrent and overlayWidget
+ final LayerLink _link = LayerLink();
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      key:_parrentWidgetKey,
       height: 30,
       width: 200,
-      child: OutlinedButton(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text("Hello Button"),
-            Icon(_isOverlayOpen ? Icons.expand_less : Icons.expand_more),
-          ],
+      child: CompositedTransformTarget(
+        link: _link,
+        child: OutlinedButton(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("Hello Button"),
+              Icon(_isOverlayOpen ? Icons.expand_less : Icons.expand_more),
+            ],
+          ),
+          onPressed: () {
+            setState(() {
+              //* is overlay open it Call Hide Method
+              _isOverlayOpen ? hideOverlay() : showOverlay();
+              //* toggle the Variable to show And Hide
+              _isOverlayOpen = !_isOverlayOpen;
+            });
+            // print(_isOverlayOpen);
+          },
         ),
-        onPressed: () {
-          setState(() {
-            //* is overlay open it Call Hide Method
-            _isOverlayOpen ? hideOverlay() : showOverlay();
-            //* toggle the Variable to show And Hide
-            _isOverlayOpen = !_isOverlayOpen;
-          });
-          // print(_isOverlayOpen);
-        },
       ),
     );
   }
