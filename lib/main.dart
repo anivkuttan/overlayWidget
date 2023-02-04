@@ -43,8 +43,28 @@ class OverlayButton extends StatefulWidget {
 }
 
 class _OverlayButtonState extends State<OverlayButton> {
+ /* 
+  * decleare the variables 
+  * overlayEntry , and  isOverlayOpen  
+  * in build method return the parrentWidget(base Button)
+  * create showOverlay and HideOverlay method
+  * in Showoverlay method create OverlayState variable 
+  * and Check is Early created overlayEntry variable null 
+  * then in the If condition block build the OverlayWidgetDesign 
+  * (otherwise the Show method only check the Overlay entry variable is null or not it is null then Exit the ShowOverlay Method)
+  * after the build OverlayWidgetDesign add the overlayWidget into overlaystate variable using insert buildin method
+  * (make Sure the early created OverlayEntry variable name same as Overlay Widget and Insert method)
+  * (otherwise the overlay allway is be null )
+
+  * OverlayEntry? anioverlay;
+  * if(anioverlay == null){
+  * anioverlay = OverlayEntry(builder:(){});
+  * }
+  * Overlay.of(context)!.insert(anioverlay);
+
+ */
   bool _isOverlayOpen = false;
-  OverlayEntry? overlayEntry;
+  OverlayEntry? kuttansoverlayEntry;
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +81,12 @@ class _OverlayButtonState extends State<OverlayButton> {
         ),
         onPressed: () {
           setState(() {
+            //* is overlay open it Call Hide Method
             _isOverlayOpen ? hideOverlay() : showOverlay();
+            //* toggle the Variable to show And Hide
             _isOverlayOpen = !_isOverlayOpen;
           });
-          // ignore: avoid_print
-          print(_isOverlayOpen);
+          // print(_isOverlayOpen);
         },
       ),
     );
@@ -74,8 +95,10 @@ class _OverlayButtonState extends State<OverlayButton> {
   showOverlay() {
     OverlayState? overlayState = Overlay.of(context);
 
-    if (overlayEntry == null) {
-      overlayEntry = OverlayEntry(builder: (context) {
+    if (kuttansoverlayEntry == null) {
+      //* make Sure ther returned variable same name as the decleared variable 
+      //* don't create a new OverlayEntry Variable heae
+      kuttansoverlayEntry = OverlayEntry(builder: (context) {
         return Positioned(
           top: 0,
           left: 0,
@@ -83,20 +106,20 @@ class _OverlayButtonState extends State<OverlayButton> {
           child: Container(height: 30, width: 300, color: Colors.red),
         );
       });
-      overlayState!.insert(overlayEntry!);
-    } else {
-      // ignore: avoid_print
-      print("overlay entry not inserted");
+      //* make Sure the inserted OverlayEntry name is same as First Created variable
+      overlayState!.insert(kuttansoverlayEntry!);
+    } else { 
+      // print("overlay entry not inserted");
     }
   }
 
   hideOverlay() {
-    if (overlayEntry != null) {
-      overlayEntry!.remove();
-      overlayEntry = null;
+    //* checking to avodi null error
+    if (kuttansoverlayEntry != null) {
+      kuttansoverlayEntry!.remove();
+      kuttansoverlayEntry = null;
     } else {
-      // ignore: avoid_print
-      print("Overlay is null");
+      // print("Overlay is null");
     }
   }
 }
