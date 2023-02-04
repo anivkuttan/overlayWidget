@@ -73,16 +73,17 @@ class _OverlayButtonState extends State<OverlayButton> {
 
   showOverlay() {
     OverlayState? overlayState = Overlay.of(context);
-    OverlayEntry entry = OverlayEntry(builder: (context) {
-      return Positioned(
-        top: 0,
-        left: 0,
-        width: 100,
-        child: Container(height: 30, width: 300, color: Colors.red),
-      );
-    });
+
     if (overlayEntry == null) {
-      overlayState!.insert(entry);
+      overlayEntry = OverlayEntry(builder: (context) {
+        return Positioned(
+          top: 0,
+          left: 0,
+          width: 100,
+          child: Container(height: 30, width: 300, color: Colors.red),
+        );
+      });
+      overlayState!.insert(overlayEntry!);
     } else {
       // ignore: avoid_print
       print("overlay entry not inserted");
