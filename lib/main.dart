@@ -27,20 +27,126 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('AppBar'),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+      child: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('AppBar'),
+            bottom: const TabBar(
+              tabs: [
+                Text(
+                  "Tab 1",
+                  style: TextStyle(color: Colors.black),
+                ),
+                Text(
+                  "Tab 2",
+                  style: TextStyle(color: Colors.black),
+                ),
+                Text(
+                  "Tab 3",
+                  style: TextStyle(color: Colors.black),
+                ),
+              ],
+            ),
+          ),
+          body: TabBarView(
             children: [
-              ElevatedButton(
-                child: const Text("HEllo"),
-                onPressed: () {},
+              Container(
+                color: Colors.green.shade400,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) {
+                              return const SecondPage();
+                            }),
+                          );
+                        },
+                        child: const Text("NewPage"),
+                      ),
+                      const OverlayButton(),
+                      ElevatedButton(
+                        child: const Text("Hello"),
+                        onPressed: () {
+                          print("Hello button Pressed");
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("ButtonPressed"),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              const SizedBox(height: 30),
-              const OverlayButton(),
+              Container(
+                color: Colors.yellow.shade300,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) {
+                              return const SecondPage();
+                            }),
+                          );
+                        },
+                        child: const Text("NewPage"),
+                      ),
+                      const OverlayButton(),
+                      ElevatedButton(
+                        child: const Text("Hello"),
+                        onPressed: () {
+                          print("Hello button Pressed");
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("ButtonPressed"),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                color: Colors.pink.shade400,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) {
+                              return const SecondPage();
+                            }),
+                          );
+                        },
+                        child: const Text("NewPage"),
+                      ),
+                      const OverlayButton(),
+                      ElevatedButton(
+                        child: const Text("Hello"),
+                        onPressed: () {
+                          print("Hello button Pressed");
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("ButtonPressed"),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -100,7 +206,7 @@ class _OverlayButtonState extends State<OverlayButton> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Hello Button"),
+              Text(_isOverlayOpen ? "Hide overlay" : "Show Overlay"),
               Icon(_isOverlayOpen ? Icons.expand_less : Icons.expand_more),
             ],
           ),
@@ -185,5 +291,26 @@ class _OverlayButtonState extends State<OverlayButton> {
         // print("Overlay is null");
       }
     });
+  }
+}
+
+class SecondPage extends StatefulWidget {
+  const SecondPage({Key? key}) : super(key: key);
+
+  @override
+  State<SecondPage> createState() => _SecondPageState();
+}
+
+class _SecondPageState extends State<SecondPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Second Page"),
+      ),
+      body: const Center(
+        child: Text("SecondPage"),
+      ),
+    );
   }
 }
