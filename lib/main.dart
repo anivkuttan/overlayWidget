@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
@@ -29,8 +31,18 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: const Text('AppBar'),
         ),
-        body: const Center(
-          child: OverlayButton(),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                child: const Text("HEllo"),
+                onPressed: () {},
+              ),
+              const SizedBox(height: 30),
+              const OverlayButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -72,12 +84,16 @@ class _OverlayButtonState extends State<OverlayButton> {
   // link the parrent and overlayWidget
   // to get the parrentwidget position
   final LayerLink _link = LayerLink();
+  double parrentWidth = 0.0;
+  double parrentHeight = 0.0;
+  // final Offset _parrentOffset = Offset.zero;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       key: _parrentWidgetKey,
-      height: 30,
       width: 200,
+      height: 30,
       child: CompositedTransformTarget(
         link: _link,
         child: OutlinedButton(
@@ -102,28 +118,52 @@ class _OverlayButtonState extends State<OverlayButton> {
     );
   }
 
+  findParrentWidgetData(BuildContext context) {
+    RenderBox renderBox =
+        _parrentWidgetKey.currentContext!.findRenderObject() as RenderBox;
+    parrentWidth = renderBox.size.width;
+    parrentHeight = renderBox.size.height;
+    // _parrentOffset =
+    //     renderBox.localToGlobal(Offset(parrentWidth, parrentHeight));
+    // print("$parrentWidth,$parrentHeight");
+  }
+
   showOverlay() {
     OverlayState? overlayState = Overlay.of(context);
-
+    findParrentWidgetData(context);
     if (kuttansoverlayEntry == null) {
       //* make Sure ther returned variable same name as the decleared variable
       //* don't create a new OverlayEntry Variable hear
       kuttansoverlayEntry = OverlayEntry(builder: (context) {
-        return Positioned(
-          top: 120,
-          left: 30,
-          width: 100,
-          child: Material(
-            //* make material widget top of the CompositedTransform Follower widget
-            child: CompositedTransformFollower(
-              link: _link,
-              child: InkWell(
-                onTap: () {
-                  hideOverlay();
-                },
-                child: Container(height: 30, width: 300, color: Colors.red),
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            print("Anikuttan Guester Called8888");
+            hideOverlay();
+            setState(() {
+              _isOverlayOpen = false;
+            });
+          },
+          child: Stack(
+            children: [
+              Positioned(
+                width: parrentWidth,
+                child: CompositedTransformFollower(
+                  link: _link,
+                  offset: Offset(0, parrentHeight + 10),
+                  child: Material(
+                    child: ListTile(
+                      tileColor: Colors.blue,
+                      title: const Text("Hello"),
+                      onTap: () {
+                        print("ListTile Taped");
+                        hideOverlay();
+                      },
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         );
       });
@@ -136,11 +176,14 @@ class _OverlayButtonState extends State<OverlayButton> {
 
   hideOverlay() {
     //* checking to avodi null error
-    if (kuttansoverlayEntry != null) {
-      kuttansoverlayEntry!.remove();
-      kuttansoverlayEntry = null;
-    } else {
-      // print("Overlay is null");
-    }
+    setState(() {
+      if (kuttansoverlayEntry != null) {
+        kuttansoverlayEntry!.remove();
+        kuttansoverlayEntry = null;
+        _isOverlayOpen = false;
+      } else {
+        // print("Overlay is null");
+      }
+    });
   }
 }
