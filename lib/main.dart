@@ -24,12 +24,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('AppBar'),
-      ),
-      body: const Center(
-        child: OverlayButton(),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('AppBar'),
+        ),
+        body: const Center(
+          child: OverlayButton(),
+        ),
       ),
     );
   }
@@ -43,7 +45,7 @@ class OverlayButton extends StatefulWidget {
 }
 
 class _OverlayButtonState extends State<OverlayButton> {
- /* 
+  /* 
   * decleare the variables 
   * overlayEntry , and  isOverlayOpen  
   * in build method return the parrentWidget(base Button)
@@ -66,13 +68,14 @@ class _OverlayButtonState extends State<OverlayButton> {
   bool _isOverlayOpen = false;
   OverlayEntry? kuttansoverlayEntry;
   // global key to fint the Parrent widget render box values
- final  GlobalKey _parrentWidgetKey = GlobalKey();
- // link the parrent and overlayWidget
- final LayerLink _link = LayerLink();
+  final GlobalKey _parrentWidgetKey = GlobalKey();
+  // link the parrent and overlayWidget
+  // to get the parrentwidget position
+  final LayerLink _link = LayerLink();
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      key:_parrentWidgetKey,
+      key: _parrentWidgetKey,
       height: 30,
       width: 200,
       child: CompositedTransformTarget(
@@ -103,19 +106,30 @@ class _OverlayButtonState extends State<OverlayButton> {
     OverlayState? overlayState = Overlay.of(context);
 
     if (kuttansoverlayEntry == null) {
-      //* make Sure ther returned variable same name as the decleared variable 
-      //* don't create a new OverlayEntry Variable heae
+      //* make Sure ther returned variable same name as the decleared variable
+      //* don't create a new OverlayEntry Variable hear
       kuttansoverlayEntry = OverlayEntry(builder: (context) {
         return Positioned(
-          top: 0,
-          left: 0,
+          top: 120,
+          left: 30,
           width: 100,
-          child: Container(height: 30, width: 300, color: Colors.red),
+          child: Material(
+            //* make material widget top of the CompositedTransform Follower widget
+            child: CompositedTransformFollower(
+              link: _link,
+              child: InkWell(
+                onTap: () {
+                  hideOverlay();
+                },
+                child: Container(height: 30, width: 300, color: Colors.red),
+              ),
+            ),
+          ),
         );
       });
       //* make Sure the inserted OverlayEntry name is same as First Created variable
       overlayState!.insert(kuttansoverlayEntry!);
-    } else { 
+    } else {
       // print("overlay entry not inserted");
     }
   }
