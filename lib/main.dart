@@ -31,7 +31,11 @@ class _HomePageState extends State<HomePage> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('AppBar'),
+            centerTitle: true,
+            title: const OverlayButton(
+              buttonHeight: 30,
+              buttonWidth: 120,
+            ),
             bottom: const TabBar(
               tabs: [
                 Text(
@@ -51,100 +55,100 @@ class _HomePageState extends State<HomePage> {
           ),
           body: TabBarView(
             children: [
-              Container(
-                color: Colors.green.shade400,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) {
-                              return const SecondPage();
-                            }),
-                          );
-                        },
-                        child: const Text("NewPage"),
-                      ),
-                      const OverlayButton(),
-                      ElevatedButton(
-                        child: const Text("Hello"),
-                        onPressed: () {
-                          print("Hello button Pressed");
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("ButtonPressed"),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) {
+                            return const SecondPage();
+                          }),
+                        );
+                      },
+                      child: const Text("NewPage"),
+                    ),
+                    const OverlayButton(
+                      buttonHeight: 30,
+                      buttonWidth: 120,
+                    ),
+                    ElevatedButton(
+                      child: const Text("Hello"),
+                      onPressed: () {
+                        print("Hello button Pressed");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("ButtonPressed"),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
-              Container(
-                color: Colors.yellow.shade300,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) {
-                              return const SecondPage();
-                            }),
-                          );
-                        },
-                        child: const Text("NewPage"),
-                      ),
-                      const OverlayButton(),
-                      ElevatedButton(
-                        child: const Text("Hello"),
-                        onPressed: () {
-                          print("Hello button Pressed");
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("ButtonPressed"),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) {
+                            return const SecondPage();
+                          }),
+                        );
+                      },
+                      child: const Text("NewPage"),
+                    ),
+                    const OverlayButton(
+                      buttonHeight: 30,
+                      buttonWidth: 120,
+                    ),
+                    ElevatedButton(
+                      child: const Text("Hello"),
+                      onPressed: () {
+                        print("Hello button Pressed");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("ButtonPressed"),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
-              Container(
-                color: Colors.pink.shade400,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) {
-                              return const SecondPage();
-                            }),
-                          );
-                        },
-                        child: const Text("NewPage"),
-                      ),
-                      const OverlayButton(),
-                      ElevatedButton(
-                        child: const Text("Hello"),
-                        onPressed: () {
-                          print("Hello button Pressed");
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("ButtonPressed"),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) {
+                            return const SecondPage();
+                          }),
+                        );
+                      },
+                      child: const Text("NewPage"),
+                    ),
+                    const OverlayButton(
+                      buttonHeight: 30,
+                      buttonWidth: 120,
+                    ),
+                    ElevatedButton(
+                      child: const Text("Hello"),
+                      onPressed: () {
+                        print("Hello button Pressed");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("ButtonPressed"),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -156,7 +160,11 @@ class _HomePageState extends State<HomePage> {
 }
 
 class OverlayButton extends StatefulWidget {
-  const OverlayButton({Key? key}) : super(key: key);
+  final double buttonHeight;
+  final double buttonWidth;
+  const OverlayButton(
+      {Key? key, required this.buttonHeight, required this.buttonWidth})
+      : super(key: key);
 
   @override
   State<OverlayButton> createState() => _OverlayButtonState();
@@ -198,15 +206,16 @@ class _OverlayButtonState extends State<OverlayButton> {
   Widget build(BuildContext context) {
     return SizedBox(
       key: _parrentWidgetKey,
-      width: 200,
-      height: 30,
+      width: widget.buttonWidth,
+      height: widget.buttonHeight,
       child: CompositedTransformTarget(
         link: _link,
-        child: OutlinedButton(
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(_isOverlayOpen ? "Hide overlay" : "Show Overlay"),
+              Text(_isOverlayOpen ? "Hide" : "Show"),
               Icon(_isOverlayOpen ? Icons.expand_less : Icons.expand_more),
             ],
           ),
@@ -243,6 +252,13 @@ class _OverlayButtonState extends State<OverlayButton> {
       kuttansoverlayEntry = OverlayEntry(builder: (context) {
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
+          onHorizontalDragStart: (d) {
+            print("Drag Start");
+            hideOverlay();
+            setState(() {
+              _isOverlayOpen = false;
+            });
+          },
           onTap: () {
             print("Anikuttan Guester Called8888");
             hideOverlay();
@@ -259,7 +275,7 @@ class _OverlayButtonState extends State<OverlayButton> {
                   offset: Offset(0, parrentHeight + 10),
                   child: Material(
                     child: ListTile(
-                      tileColor: Colors.blue,
+                      tileColor: Colors.yellow,
                       title: const Text("Hello"),
                       onTap: () {
                         print("ListTile Taped");
