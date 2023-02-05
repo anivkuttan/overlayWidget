@@ -192,6 +192,7 @@ class _OverlayButtonState extends State<OverlayButton> {
 
  */
   bool _isOverlayOpen = false;
+
   OverlayEntry? kuttansoverlayEntry;
   // global key to fint the Parrent widget render box values
   final GlobalKey _parrentWidgetKey = GlobalKey();
@@ -200,7 +201,7 @@ class _OverlayButtonState extends State<OverlayButton> {
   final LayerLink _link = LayerLink();
   double parrentWidth = 0.0;
   double parrentHeight = 0.0;
-  // final Offset _parrentOffset = Offset.zero;
+  bool switchValue = false;
 
   @override
   Widget build(BuildContext context) {
@@ -221,9 +222,8 @@ class _OverlayButtonState extends State<OverlayButton> {
           ),
           onPressed: () {
             setState(() {
-              //* is overlay open it Call Hide Method
               _isOverlayOpen ? hideOverlay() : showOverlay();
-              //* toggle the Variable to show And Hide
+              //* toggle the Variable
               _isOverlayOpen = !_isOverlayOpen;
             });
             // print(_isOverlayOpen);
@@ -238,9 +238,6 @@ class _OverlayButtonState extends State<OverlayButton> {
         _parrentWidgetKey.currentContext!.findRenderObject() as RenderBox;
     parrentWidth = renderBox.size.width;
     parrentHeight = renderBox.size.height;
-    // _parrentOffset =
-    //     renderBox.localToGlobal(Offset(parrentWidth, parrentHeight));
-    // print("$parrentWidth,$parrentHeight");
   }
 
   showOverlay() {
@@ -250,7 +247,9 @@ class _OverlayButtonState extends State<OverlayButton> {
       //* make Sure ther returned variable same name as the decleared variable
       //* don't create a new OverlayEntry Variable hear
       kuttansoverlayEntry = OverlayEntry(builder: (context) {
+        //* GestureDetector top of the overlay
         return GestureDetector(
+          //* opaque to fill the Entire Screen GestureDetector widget
           behavior: HitTestBehavior.opaque,
           onHorizontalDragStart: (d) {
             print("Drag Start");
@@ -267,15 +266,33 @@ class _OverlayButtonState extends State<OverlayButton> {
             });
           },
           child: Stack(
+            //statck widget to avoid Error while using Positioned widget
+            // like increct parrent use errors
+
             children: [
               Positioned(
                 width: parrentWidth,
                 child: CompositedTransformFollower(
+                  // follower child only build in under parrentWidget
+                  // GestureDetector
+                  // Positioned
+                  // Follower
+                  // material
                   link: _link,
+
                   offset: Offset(0, parrentHeight + 10),
                   child: Material(
                     child: ListTile(
                       tileColor: Colors.yellow,
+                      trailing: Switch(
+                          value: switchValue,
+                          onChanged: (value) {
+                            //* overlayState is a Stateful widget
+                            //* to preform SetState call overlayState.setState in inside overlaywidget
+                            overlayState!.setState(() {
+                              switchValue = value;
+                            });
+                          }),
                       title: const Text("Hello"),
                       onTap: () {
                         print("ListTile Taped");
